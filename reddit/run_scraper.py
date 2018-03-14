@@ -4,7 +4,7 @@ from __future__ import print_function, division
 import sys
 import time
 
-from bot import RedditScraper
+from scraper import RedditScraper
 
 
 def main_loop(bot):
