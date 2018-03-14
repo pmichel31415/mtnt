@@ -26,11 +26,12 @@ DICT_FILE_PREFIX='models/wmt.en.dic'
 SUBWORD_MODEL_PREFIX="models/wmt.${VOCABULARY_SIZE}.${SUBWORD_MODEL}"
 SUBWORD_MODEL_FILE="${SUBWORD_MODEL_PREFIX}.model"
 # Language model
-LM_MODEL_ARPA_PREFIX="models/wmt.${VOCABULARY_SIZE}.${SUBWORD_MODEL}.lm.${LM_ORDER}"
+LM_MODEL_PREFIX="models/wmt.${VOCABULARY_SIZE}.${SUBWORD_MODEL}.lm.${LM_ORDER}"
 LM_MODEL_ARPA_FILE="${LM_MODEL_PREFIX}.arpa"
 LM_MODEL_BINARY_FILE="${LM_MODEL_PREFIX}.bin"
 
 # Get data
+echo "Downloading data"
 wget http://data.statmt.org/wmt17/translation-task/preprocessed/de-en/corpus.tc.en.gz
 # Decompress
 gzip -d corpus.tc.en.gz
@@ -38,23 +39,29 @@ mkdir -p wmt
 mv corpus.tc.en wmt
 # Clean up
 rm corpus.tc.en.gz
-
+# Lowercase
 tr '[:upper:]' '[:lower:]' < $CORPUS_FILE > $LOWERCASED_CORPUS_FILE
 
 # Build dictionaries
+echo "Building dictionary"
 python scripts/build_dic.py $CORPUS_FILE $DICT_FILE_PREFIX
 
 # Train bpe
+echo "Building BPE model"
 python scripts/train_sentencepiece.py --input "$LOWERCASED_CORPUS_FILE" --model_prefix "$SUBWORD_MODEL_PREFIX" --model_type "$SUBWORD_MODEL" --vocab_size "$VOCABULARY_SIZE"
 
 # Tokenize
+echo "Tokenizing"
 python scripts/tokenize_sentencepiece.py $SUBWORD_MODEL_FILE $LOWERCASED_CORPUS_FILE $TOKENIZED_CORPUS_FILE
 
 # Train LM
+echo "Training LM"
 ${KENLM_BIN}/lmplz -o 5 -S 4G < $TOKENIZED_CORPUS_FILE > $LM_MODEL_ARPA_FILE
 
 # Convert to binary file for faster loading
+echo "Building binary lm model file"
 ${KENLM_BIN}/build_binary $LM_MODEL_ARPA_FILE $LM_MODEL_BINARY_FILE
 
 # Evaluate training sentences scores
+echo "Evaluate scores of the training data"
 python scripts/eval_kenlm.py $TOKENIZED_CORPUS_FILE $CORPUS_LM_SCORES $LM_MODEL_BINARY_FILE
