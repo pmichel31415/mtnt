@@ -1,0 +1,21 @@
+general:
+  output_file: backup.txt
+  debug: False
+reddit:
+  user_agent: user_agent
+  user_name: user_name
+  client_id: client_id
+  password: password
+  secret: secret
+  subreddit: all
+language_model:
+  model_file: 'model_file'
+  train_scores: 'scores_file'
+  score_percentile: 10
+dictionary:
+  dic_file: 'dic_file'
+options:
+  min_num_chars: 1
+  max_records: 10000
+  report_every: 1000
+  sleep_for: 0.5
