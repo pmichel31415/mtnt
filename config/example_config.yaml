@@ -1,6 +1,7 @@
 general:
   output_file: backup.txt
   debug: False
+  verbose: True
 reddit:
   user_agent: user_agent
   user_name: user_name
@@ -12,6 +13,8 @@ language_model:
   model_file: 'model_file'
   train_scores: 'scores_file'
   score_percentile: 10
+subwords:
+  model_file: 'subwords_file'
 dictionary:
   dic_file: 'dic_file'
 options:
