@@ -32,13 +32,13 @@ tar -zxvf ${CORPUS_DIR}/commoncrawl.tgz -C ${CORPUS_DIR} commoncrawl.fr-en.fr
 tar -zxvf ${CORPUS_DIR}/un.tgz -C ${CORPUS_DIR} un/undoc.2000.fr-en.fr
 tar -zxvf ${CORPUS_DIR}/nc.tgz -C ${CORPUS_DIR} news-commentary-v10.fr-en.fr
 tar -xvf ${CORPUS_DIR}/giga.tar -C ${CORPUS_DIR} giga-fren.release2.fixed.fr.gz
-gzip -d giga-fren.release2.fixed.fr.gz
+gzip -d ${CORPUS_DIR}/giga-fren.release2.fixed.fr.gz
 
 # Concatenate
 cat ${CORPUS_DIR}/giga-fren.release2.fixed.fr ${CORPUS_DIR}/commoncrawl.fr-en.fr ${CORPUS_DIR}/news-commentary-v10.fr-en.fr ${CORPUS_DIR}/un/undoc.2000.fr-en.fr ${CORPUS_DIR}/europarl-v7.fr-en.fr > $CORPUS_FILE
 
 # Tokenize
-$MOSES_TOKENIZER -l fr -threads 4 < ${CORPUS_FILE}.temp > $CORPUS_FILE
+$MOSES_TOKENIZER -l fr -threads 4 < ${CORPUS_FILE} > ${CORPUS_FILE}.temp 
 mv ${CORPUS_FILE}.temp $CORPUS_FILE
 
 # Delete residual files and folders
