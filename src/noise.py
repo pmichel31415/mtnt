@@ -8,13 +8,14 @@ sys.setdefaultencoding('utf-8')
 import pickle
 import numpy as np
 
-import normalize_punctuation
 # Moses tokenizer
 from nltk.tokenize.moses import MosesTokenizer
 # Bindings to KenLM for the language model
 import kenlm
 # Bindings to sentencepiece for sub-words
 import sentencepiece
+# Various text processing procedures
+import text
 # Utility functions
 import util
 
@@ -29,7 +30,7 @@ class NoiseDetector(object):
         with open(self.dictionary.dic_file, 'rb') as f:
             self.dic = pickle.load(f) 
         # Moses tokenizer
-        self.moses_tokenizer = MosesTokenizer()
+        self.moses_tokenizer = MosesTokenizer(self.options.language)
         # Load subword tokenizer
         self.subword_tokenizer = sentencepiece.SentencePieceProcessor()
         self.subword_tokenizer.Load(self.subwords.model_file)
@@ -47,10 +48,15 @@ class NoiseDetector(object):
 
     def preprocess_candidate(self, candidate):
         """Preprocess comment (essentially lowercase and tokenizes with Moses tokenizer)"""
+        # Remove mqrkdown
+        candidate = text.strip_markdown(candidate)
         # normalize punctuation
-        normalized_candidate = normalize_punctuation.normalize_punctuation(candidate)
+        normalized_candidate = text.normalize_punctuation(candidate)
         # Tokenize
-        tokenized_candidate = self.moses_tokenizer.tokenize(normalized_candidate, return_str=True)
+        if self.options.language != 'ja':
+            tokenized_candidate = self.moses_tokenizer.tokenize(normalized_candidate, return_str=True)
+        else:
+            tokenized_candidate = normalized_candidate
         # Lowercase
         lowercased_candidate = tokenized_candidate.lower()
         return lowercased_candidate
@@ -64,15 +70,20 @@ class NoiseDetector(object):
         # Get scores from lm score
         score = self.lm.score(tokenized_candidate, bos=True, eos=True) #min(self.lm.score(' '.join(five_gram), bos=True, eos=True) for five_gram in pieces[::5])
         # Normalize by length
-        normalized_score = score / len(pieces)
+        normalized_score = score / (len(pieces) + 1e-20)
         # Check whether the score is bad enough
         return normalized_score < self.score_threshold, normalized_score
 
     def contains_oovs(self, candidate):
         """Check whether the candidate sentence contains OOV words"""
+        # For japanese, return True (because OOVs is too restrictive)
+        if self.options.language == 'ja':
+            return True
+        # Else check for OOVs
         has_oov = False
         # Iterate over all words in the candidate string
-        for word in candidate.split():
+        words = candidate.split()
+        for word in words:
             if not (word in self.dic):
                 return True
         # If no OOV return False

@@ -2,49 +2,41 @@
 #SBATCH -n 1
 #SBATCH -c 1 
 #SBATCH -t 0
-#SBATCH --mem=5g 
+#SBATCH --mem=15g 
 #SBATCH -J FUN_JOB_NAME
-#SBATCH -o logs/log_preprocessing_wmt.txt
+##SBATCH -o logs/log_prepare_model.txt
 
 # Command line arguments
-SUBWORD_MODEL=${1:-'bpe'}
-VOCABULARY_SIZE=${2:-'1000'}
-LM_ORDER=${3:-'5'}
+CONFIG_FILE=${1:-"config/data.en.config"}
+
+# Load config
+source $CONFIG_FILE
 
 # Path to KenLM binaries
 KENLM_BIN="$HOME/wd/kenlm/build/bin"
 
 # Filenames
 # Corpora
-CORPUS_FILE='wmt/corpus.tc.en'
-LOWERCASED_CORPUS_FILE='wmt/corpus.low.en'
-TOKENIZED_CORPUS_FILE="wmt/corpus.${VOCABULARY_SIZE}.${SUBWORD_MODEL}.en"
-CORPUS_LM_SCORES="wmt/corpus.${VOCABULARY_SIZE}.${SUBWORD_MODEL}.scores"
+CORPUS_FILE="${CORPUS_DIR}/${FILE_ROOT}.${LANG}.txt"
+LOWERCASED_CORPUS_FILE="${CORPUS_DIR}/${FILE_ROOT}.low.${LANG}.txt"
+TOKENIZED_CORPUS_FILE="${CORPUS_DIR}/${FILE_ROOT}.${LANG}.${VOCABULARY_SIZE}.${SUBWORD_MODEL}.txt"
+CORPUS_LM_SCORES="${CORPUS_DIR}/${FILE_ROOT}.${LANG}.${VOCABULARY_SIZE}.${SUBWORD_MODEL}.scores"
 # Token dictionary
-DICT_FILE_PREFIX='models/wmt.en.dic'
+DICT_FILE_PREFIX="models/${FILE_ROOT}.${LANG}.dic"
 # Subwords
-SUBWORD_MODEL_PREFIX="models/wmt.${VOCABULARY_SIZE}.${SUBWORD_MODEL}"
+SUBWORD_MODEL_PREFIX="models/${FILE_ROOT}.${LANG}.${VOCABULARY_SIZE}.${SUBWORD_MODEL}"
 SUBWORD_MODEL_FILE="${SUBWORD_MODEL_PREFIX}.model"
 # Language model
-LM_MODEL_PREFIX="models/wmt.${VOCABULARY_SIZE}.${SUBWORD_MODEL}.lm.${LM_ORDER}"
+LM_MODEL_PREFIX="models/${FILE_ROOT}.${LANG}.${VOCABULARY_SIZE}.${SUBWORD_MODEL}.lm.${LM_ORDER}"
 LM_MODEL_ARPA_FILE="${LM_MODEL_PREFIX}.arpa"
 LM_MODEL_BINARY_FILE="${LM_MODEL_PREFIX}.bin"
 
-# Get data
-echo "Downloading data"
-wget http://data.statmt.org/wmt17/translation-task/preprocessed/de-en/corpus.tc.en.gz
-# Decompress
-gzip -d corpus.tc.en.gz
-mkdir -p wmt
-mv corpus.tc.en wmt
-# Clean up
-rm corpus.tc.en.gz
 # Lowercase
 tr '[:upper:]' '[:lower:]' < $CORPUS_FILE > $LOWERCASED_CORPUS_FILE
 
 # Build dictionaries
 echo "Building dictionary"
-python scripts/build_dic.py $CORPUS_FILE $DICT_FILE_PREFIX
+python scripts/build_dic.py $CORPUS_FILE $DICT_FILE_PREFIX $LANG
 
 # Train bpe
 echo "Building BPE model"
@@ -53,6 +45,7 @@ python scripts/train_sentencepiece.py --input "$LOWERCASED_CORPUS_FILE" --model_
 # Tokenize
 echo "Tokenizing"
 python scripts/tokenize_sentencepiece.py $SUBWORD_MODEL_FILE $LOWERCASED_CORPUS_FILE $TOKENIZED_CORPUS_FILE
+sed -i '/^\s*$/d' $TOKENIZED_CORPUS_FILE
 
 # Train LM
 echo "Training LM"

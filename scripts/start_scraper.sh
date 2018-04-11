@@ -1,9 +1,10 @@
 #!/bin/bash
 #SBATCH -t 0
-#SBATCH --mem=6g
+#SBATCH --mem=20g
 #SBATCH -n 1
 #SBATCH -N 1
 #SBATCH -J ROBOT_OVERTAKING_INTERNET_DONT_DISTURB
-#SBATCH -o logs/log_scraper.txt
 
-python src/run_scraper.py config/my_config.yaml
+CONFIG_FILE=${1:-'config/my_config.yaml'}
+
+python src/run_scraper.py $CONFIG_FILE

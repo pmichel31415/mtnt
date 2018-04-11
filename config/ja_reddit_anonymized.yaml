@@ -1,0 +1,27 @@
+general:
+  output_file: output/test-ja-4000.txt
+  debug: False
+  verbose: True
+reddit:
+  user_agent: noisy-mt-bot
+  user_name: noisy-mt-bot
+  client_id: WvQVB2p9Kjpw0w
+  password: wAvAggSB4pH1FXgb
+  secret: dwEoMQUkIKuh32v8W4PkSxgZpH4
+  subreddit: 'newsokur+bakanewsjp+newsokuvip+lowlevelaware+steamr'
+  new_comments: False
+  start_timestamp: 1522339940
+language_model:
+  model_file: 'models/corpus.ja.4000.bpe.lm.5.bin'
+  train_scores: 'ja/corpus.ja.4000.bpe.scores'
+  score_percentile: 1
+subwords:
+  model_file: 'models/corpus.ja.4000.bpe.model'
+dictionary:
+  dic_file: 'models/corpus.ja.dic_lower.bin'
+options:
+  language: 'ja'
+  min_num_chars: 1
+  max_records: 100000
+  report_every: 1000
+  sleep_for: 0.5

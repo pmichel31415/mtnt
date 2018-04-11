@@ -1,0 +1,27 @@
+general:
+  output_file: output/test-en-1000.txt
+  debug: False
+  verbose: True
+reddit:
+  user_agent: placeholder
+  user_name: placeholder
+  client_id: placeholder
+  password: placeholder
+  secret: placeholder
+  subreddit: all
+  new_comments: True
+  start_timestamp: None 
+language_model:
+  model_file: 'models/wmt.en.1000.bpe.lm.5.bin'
+  train_scores: 'wmt/corpus.en.1000.bpe.scores'
+  score_percentile: 1
+subwords:
+  model_file: 'models/wmt.en.1000.bpe.model'
+dictionary:
+  dic_file: 'models/wmt.en.dic_lower.bin'
+options:
+  language: 'en'
+  min_num_chars: 1
+  max_records: 100000
+  report_every: 1000
+  sleep_for: 0.5

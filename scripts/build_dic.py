@@ -4,13 +4,17 @@ import pickle
 
 wmt_training_file = sys.argv[1]
 output_file = sys.argv[2]
+lang = sys.argv[3]
 
 dic = set()
 dic_lower = set()
 
 with open(wmt_training_file, 'r') as f:
     for l in f:
-        words = l.strip().split()
+        if lang == 'ja':
+            words = l.strip()
+        else:
+            words = l.strip().split()
         for word in words:
             dic.add(word)
             dic_lower.add(word.lower())

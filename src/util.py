@@ -48,10 +48,3 @@ def loadtxt(filename):
         for l in f:
             txt.append(l.strip())
     return txt
-
-# Regex to detect URLs
-url_regex = re.compile('.*(https?://)?(www\\.)?([a-z0-9]+\\.)+(org|com|edu|be|ly|gl|co|tv|it|fm|net)(/[^/]*)*.*')
-
-def contains_url(s):
-    """Check whether a string contains a url"""
-    return bool(url_regex.match(s))

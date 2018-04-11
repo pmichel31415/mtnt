@@ -6,7 +6,7 @@ import pickle
 from collections import defaultdict
 from nltk.tokenize.moses import MosesTokenizer
 
-from src.util import contains_url
+import src.text as text
 
 input_file = sys.argv[1]
 dic_file = sys.argv[2]
@@ -26,12 +26,14 @@ with open(input_file, 'r') as f:
         # Get first field
         comment = l.split('\t')[0]
         # Remove urls
-        comment = ' '.join(filter(lambda w: not contains_url(w), comment.split()))
+        comment = ' '.join(filter(lambda w: not text.contains_url(w), comment.split()))
+        # Normalize punctuation
+        comment = text.normalize_punctuation(comment)
         # Tokenize with the moses tokenizer
         sentence = tokenizer.tokenize(comment)
         for w in sentence:
             # check whether the word is in the WMT dictionary
-            if w not in dic:
+            if w.lower() not in dic:
                 counts[w] += 1
 # Sort by counts
 sorted_counts = sorted(counts.items(), key=lambda x: x[1])
