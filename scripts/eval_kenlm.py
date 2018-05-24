@@ -5,7 +5,7 @@ import sys
 
 import kenlm
 
-from math import exp, log
+from math import exp, log, log10, log2
 
 input_file = sys.argv[1]
 output_file = sys.argv[2]
@@ -23,5 +23,6 @@ with open(output_file, 'w+') as out_f:
             full_score += score
             num_tokens += len(l.split())
 
-print('ppl: %.2f' % exp(-full_score / num_tokens * log(10)))
+print('ppl: %.3f' % exp(-full_score / num_tokens * log(10)))
+print('bpc: %.3f' % (-full_score / num_tokens * log2(10)))
 

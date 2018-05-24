@@ -11,7 +11,7 @@ def main_loop_old_comments(reddit_scraper):
     # Start looping
     reddit_scraper.tick()
     # starting timestamp
-    timestamp = if reddit_scraper.reddit.start_timestamp is None time.time() else reddit_scraper.reddit.start_timestamp
+    timestamp = time.time() if reddit_scraper.reddit.start_timestamp is None else reddit_scraper.reddit.start_timestamp
     # Collect posts on a day to day basis
     delta_time = 24*3600
     # Go back up to 2006 (reddit was funded in 2005)

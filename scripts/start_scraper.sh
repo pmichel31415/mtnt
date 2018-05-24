@@ -7,4 +7,4 @@
 
 CONFIG_FILE=${1:-'config/my_config.yaml'}
 
-python src/run_scraper.py $CONFIG_FILE
+python2.7 src/run_scraper.py $CONFIG_FILE
