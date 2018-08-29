@@ -40,10 +40,10 @@ cat ${CORPUS_DIR}/giga-fren.release2.fixed.fr ${CORPUS_DIR}/commoncrawl.fr-en.fr
 cat ${CORPUS_DIR}/giga-fren.release2.fixed.en ${CORPUS_DIR}/commoncrawl.fr-en.en ${CORPUS_DIR}/news-commentary-v10.fr-en.en ${CORPUS_DIR}/un/undoc.2000.fr-en.en ${CORPUS_DIR}/europarl-v7.fr-en.en > $CORPUS_FILE_EN
 
 # Tokenize
-$MOSES_TOKENIZER -l fr -threads 4 < ${CORPUS_FILE} > ${CORPUS_FILE}.temp
-mv ${CORPUS_FILE}.temp $CORPUS_FILE
-$MOSES_TOKENIZER -l en -threads 4 < ${CORPUS_FILE_EN} > ${CORPUS_FILE_EN}.temp
-mv ${CORPUS_FILE_EN}.temp $CORPUS_FILE_EN
+#$MOSES_TOKENIZER -l fr -threads 4 < ${CORPUS_FILE} > ${CORPUS_FILE}.temp
+#mv ${CORPUS_FILE}.temp $CORPUS_FILE
+#$MOSES_TOKENIZER -l en -threads 4 < ${CORPUS_FILE_EN} > ${CORPUS_FILE_EN}.temp
+#mv ${CORPUS_FILE_EN}.temp $CORPUS_FILE_EN
 
 # Delete residual files and folders
 rm ${CORPUS_DIR}/*.{tar,gz,tgz}
