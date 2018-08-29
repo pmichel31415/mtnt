@@ -43,6 +43,9 @@ bash scripts/prepare-en-fr.sh config/data.fr.config path/to/moses/scripts
 
 # Download and prepare the en<->ja monolingual and parallel data
 bash scripts/download_ja.sh config/data.ja.config path/to/moses/scripts
+
+# Download and extract MTNT
+wget http://www.cs.cmu.edu/~pmichel1/hosting/MTNT.1.0.tar.gz && tar xvzf MTNT.1.0.tar.gz && rm MTNT.1.0.tar.gz
 ```
 
 You can edit the `config/data.{en,fr,ja}.config` files to change filenames, subword parameters, etc...
