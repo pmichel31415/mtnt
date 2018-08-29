@@ -1,11 +1,11 @@
 <div align="center">
-  <a href="http://www.cs.cmu.edu/~pmichel1/mtnt"><img alt="MTNT" src="http://www.cs.cmu.edu/~pmichel1/assets/img/mtnt-icon.gif"></a><br><br>
+  <a href="http://www.cs.cmu.edu/~pmichel1/mtnt"><img alt="MTNT" width=100 src="http://www.cs.cmu.edu/~pmichel1/assets/img/mtnt-icon.gif"></a><br><br>
 </div>
 
 
 # MTNT: A Testbed for Machine Translation of Noisy Text
 
-This repo contains the code for the EMNLP 2018 paper [MTNT: A Testbed for Machine Translation of Noisy Text](http://www.cs.cmu.edu/~pmichel1/hosting/mtnt-emnlp.pdf). You can access the data [here](http://www.cs.cmu.edu/~pmichel1/mtnt).
+This repo contains the code for the EMNLP 2018 paper [MTNT: A Testbed for Machine Translation of Noisy Text](http://www.cs.cmu.edu/~pmichel1/hosting/mtnt-emnlp.pdf). It will allow you to reproduce the collection process as well as the MT experiments. You can access the data [here](http://www.cs.cmu.edu/~pmichel1/mtnt).
 
 ## Prerequisites
 
