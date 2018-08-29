@@ -7,10 +7,10 @@ tune-en-ja: !LoadSerialized
       tasks:
       - !PreprocTokenize
         in_files:
-        - '{EXP_DIR}/../MTNT/train/en-ja.en'
-        - '{EXP_DIR}/../MTNT/test/en-ja.en'
-        - '{EXP_DIR}/../MTNT/train/en-ja.ja'
-        - '{EXP_DIR}/../MTNT/test/en-ja.ja'
+        - '{EXP_DIR}/../MTNT/train/train.en-ja.en'
+        - '{EXP_DIR}/../MTNT/test/test.en-ja.en'
+        - '{EXP_DIR}/../MTNT/train/train.en-ja.ja'
+        - '{EXP_DIR}/../MTNT/test/test.en-ja.ja'
         out_files:
         - '{EXP_DIR}/../train.noisy.en-ja.tok.en'
         - '{EXP_DIR}/../noisy.en-ja.tok.en'
@@ -60,12 +60,12 @@ tune-en-ja: !LoadSerialized
         - !AccuracyEvalTask
           eval_metrics: bleu
           src_file: '{EXP_DIR}/../noisy.en-ja.tok.en'
-          ref_file: '{EXP_DIR}/../MTNT/test/en-ja.ja'
+          ref_file: '{EXP_DIR}/../MTNT/test/test.en-ja.ja'
           hyp_file: 'recipes/hyp/{EXP}.dev.tuned.ja'
   - path: evaluate
     val: # (re-)define test data and other evaluation settings
     - !AccuracyEvalTask
       eval_metrics: bleu,gleu
       src_file: '{EXP_DIR}/../noisy.en-ja.tok.en'
-      ref_file: '{EXP_DIR}/../MTNT/test/en-ja.ja'
+      ref_file: '{EXP_DIR}/../MTNT/test/test.en-ja.ja'
       hyp_file: 'recipes/hyp/{EXP}.tuned.ja'

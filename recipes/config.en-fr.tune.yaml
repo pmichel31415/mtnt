@@ -7,8 +7,8 @@ tune-en-fr: !LoadSerialized
       tasks:
       - !PreprocTokenize
         in_files:
-        - '{EXP_DIR}/../MTNT/train/en-fr.en'
-        - '{EXP_DIR}/../MTNT/test/en-fr.en'
+        - '{EXP_DIR}/../MTNT/train/train.en-fr.en'
+        - '{EXP_DIR}/../MTNT/test/test.en-fr.en'
         out_files:
         - '{EXP_DIR}/train.noisy.en-fr.tok.en'
         - '{EXP_DIR}/noisy.en-fr.tok.en'
@@ -22,8 +22,8 @@ tune-en-fr: !LoadSerialized
             model_prefix: '{EXP_DIR}/en-fr.en.bpe.16k'
       - !PreprocTokenize
         in_files:
-        - '{EXP_DIR}/../MTNT/train/en-fr.fr'
-        - '{EXP_DIR}/../MTNT/test/en-fr.fr'
+        - '{EXP_DIR}/../MTNT/train/train.en-fr.fr'
+        - '{EXP_DIR}/../MTNT/test/test.en-fr.fr'
         out_files:
         - '{EXP_DIR}/train.noisy.en-fr.tok.fr'
         - '{EXP_DIR}/noisy.en-fr.tok.fr'
@@ -68,12 +68,12 @@ tune-en-fr: !LoadSerialized
         - !AccuracyEvalTask
           eval_metrics: bleu
           src_file: '{EXP_DIR}/noisy.en-fr.tok.en'
-          ref_file: '{EXP_DIR}/../MTNT/test/en-fr.fr'
+          ref_file: '{EXP_DIR}/../MTNT/test/test.en-fr.fr'
           hyp_file: 'recipes/hyp/{EXP}.dev.tuned.fr'
   - path: evaluate
     val: # (re-)define test data and other evaluation settings
     - !AccuracyEvalTask
       eval_metrics: bleu,gleu,wer,recall
       src_file: '{EXP_DIR}/noisy.en-fr.tok.en'
-      ref_file: '{EXP_DIR}/../MTNT/test/en-fr.fr'
+      ref_file: '{EXP_DIR}/../MTNT/test/test.en-fr.fr'
       hyp_file: 'recipes/hyp/{EXP}.tuned.fr'
