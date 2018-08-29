@@ -1,3 +1,8 @@
+<div align="center">
+  <a href="http://www.cs.cmu.edu/~pmichel1/mtnt"><img alt="MTNT" src="http://www.cs.cmu.edu/~pmichel1/assets/img/mtnt-icon.gif"></a><br><br>
+</div>
+
+
 # MTNT: A Testbed for Machine Translation of Noisy Text
 
 This repo contains the code for the EMNLP 2018 paper [MTNT: A Testbed for Machine Translation of Noisy Text](http://www.cs.cmu.edu/~pmichel1/hosting/mtnt-emnlp.pdf). You can access the data [here](http://www.cs.cmu.edu/~pmichel1/mtnt).
@@ -53,3 +58,15 @@ bash scripts/start_scraper.sh [config_file]`
 ```
 
 When running the scraper, be mindful of the [Reddit API terms](https://www.reddit.com/wiki/api).
+
+## Citing
+
+If you use this code or the MTNT dataset, please cite the following publication:
+
+```
+@InProceedings{michel2018mtnt,
+  author    = {Michel, Paul  and  Neubig, Graham},
+  title     = {A Challenge Set Approach to Evaluating Machine Translation},
+  booktitle = {Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing}
+}
+```
