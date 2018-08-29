@@ -70,3 +70,7 @@ If you use this code or the MTNT dataset, please cite the following publication:
   booktitle = {Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing}
 }
 ```
+
+## License
+
+The code is released under the [MIT License](LICENSE). The data is released under the terms of the [Reddit API]((https://www.reddit.com/wiki/api))
