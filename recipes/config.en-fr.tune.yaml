@@ -1,0 +1,79 @@
+tune-en-fr: !LoadSerialized
+  filename: 'recipes/models/base-en-fr.mod'
+  overwrite: # list of [path, value] pairs. Value can be scalar or an arbitrary object
+  - path: preproc
+    val: !PreprocRunner
+      overwrite: True
+      tasks:
+      - !PreprocTokenize
+        in_files:
+        - '{EXP_DIR}/../MTNT/train/en-fr.en'
+        - '{EXP_DIR}/../MTNT/test/en-fr.en'
+        out_files:
+        - '{EXP_DIR}/train.noisy.en-fr.tok.en'
+        - '{EXP_DIR}/noisy.en-fr.tok.en'
+        specs:
+        - filenum: all
+          tokenizers:
+          - !SentencepieceTokenizer
+            path: ''
+            train_files: ''
+            vocab_size: 16000
+            model_prefix: '{EXP_DIR}/en-fr.en.bpe.16k'
+      - !PreprocTokenize
+        in_files:
+        - '{EXP_DIR}/../MTNT/train/en-fr.fr'
+        - '{EXP_DIR}/../MTNT/test/en-fr.fr'
+        out_files:
+        - '{EXP_DIR}/train.noisy.en-fr.tok.fr'
+        - '{EXP_DIR}/noisy.en-fr.tok.fr'
+        specs:
+        - filenum: all
+          tokenizers:
+          - !SentencepieceTokenizer
+            path: ''
+            train_files: ''
+            vocab_size: 16000
+            model_type: bpe
+            model_prefix: '{EXP_DIR}/en-fr.fr.bpe.16k'
+      # Clean up AGAIN (after tokenization)
+      - !PreprocFilter
+        in_files:
+        - '{EXP_DIR}/train.noisy.en-fr.tok.en'
+        - '{EXP_DIR}/train.noisy.en-fr.tok.fr'
+        out_files:
+        - '{EXP_DIR}/train.noisy.en-fr.tok.cln.en'
+        - '{EXP_DIR}/train.noisy.en-fr.tok.cln.fr'
+        specs:
+        - type: length
+          min: 1
+          max: 70
+  - path: model.inference.search_strategy.beam_size # try some new beam settings
+    val: 15
+  - path: train # skip the training loop
+    val: !SimpleTrainingRegimen
+      run_for_epochs: 1   # Run for at most 20 epochs
+      initial_patience: 2 # Run for at least 2 epochs without decreasing the learning rate
+      patience: 1         # After there is no improvement for 1 epoch, decrease the learning rate
+      lr_decay: 0.5       # Decay the learning rate by half whenever there is no improvement
+      lr_decay_times: 2   # If there is still no improvement after decreasing the learning rate 2 times in a row, stop training
+      trainer: !SimpleSGDTrainer
+        e0: 0.1
+      batcher: !WordSrcBatcher
+        avg_batch_size: 32
+      src_file: '{EXP_DIR}/train.noisy.en-fr.tok.cln.en'
+      trg_file: '{EXP_DIR}/train.noisy.en-fr.tok.cln.fr'
+      dev_tasks:
+        # For BLEU, we shall compare against the detokenized output
+        - !AccuracyEvalTask
+          eval_metrics: bleu
+          src_file: '{EXP_DIR}/noisy.en-fr.tok.en'
+          ref_file: '{EXP_DIR}/../MTNT/test/en-fr.fr'
+          hyp_file: 'recipes/hyp/{EXP}.dev.tuned.fr'
+  - path: evaluate
+    val: # (re-)define test data and other evaluation settings
+    - !AccuracyEvalTask
+      eval_metrics: bleu,gleu,wer,recall
+      src_file: '{EXP_DIR}/noisy.en-fr.tok.en'
+      ref_file: '{EXP_DIR}/../MTNT/test/en-fr.fr'
+      hyp_file: 'recipes/hyp/{EXP}.tuned.fr'

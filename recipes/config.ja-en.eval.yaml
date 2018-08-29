@@ -1,0 +1,65 @@
+base-ja-en-eval: !LoadSerialized
+  filename: 'recipes/models/base-ja-en.mod'
+  overwrite: # list of [path, value] pairs. Value can be scalar or an arbitrary object
+  - path: preproc
+    val: !PreprocRunner
+      overwrite: True
+      tasks:
+      tasks:
+      - !PreprocTokenize
+        in_files:
+        - '{EXP_DIR}/../ja/test.kftt.ja'
+        - '{EXP_DIR}/../ja/test.kftt.en'
+        - '{EXP_DIR}/../ja/test.jesc.ja'
+        - '{EXP_DIR}/../ja/test.jesc.en'
+        - '{EXP_DIR}/../ja/test.ted.ja'
+        - '{EXP_DIR}/../ja/test.ted.en'
+        - '{EXP_DIR}/../MTNT/test/test.ja-en.ja'
+        - '{EXP_DIR}/../MTNT/test/test.ja-en.en'
+        out_files:
+        - '{EXP_DIR}/../test.kftt.tok.ja'
+        - '{EXP_DIR}/../test.kftt.tok.en'
+        - '{EXP_DIR}/../test.jesc.tok.ja'
+        - '{EXP_DIR}/../test.jesc.tok.en'
+        - '{EXP_DIR}/../test.ted.tok.ja'
+        - '{EXP_DIR}/../test.ted.tok.en'
+        - '{EXP_DIR}/../noisy.ja-en.tok.ja'
+        - '{EXP_DIR}/../noisy.ja-en.tok.en'
+        specs:
+        - filenum: all
+          tokenizers:
+          - !SentencepieceTokenizer
+            # Replace <SENTENCEPIECE_SRC_PATH> with src/ directory of sentencepiece repository
+            # The spm_* executables should be located at <SENTENCEPIECE_SRC_PATH>
+            path: ''
+            train_files:
+             - '{EXP_DIR}/../ja/train.en,{EXP_DIR}/../ja/train.ja'
+            vocab_size: 16000
+            model_type: bpe
+            model_prefix: '{EXP_DIR}/../ja/bpe.16000.shared'
+  - path: train # skip the training loop
+    val: null
+  - path: model.inference.search_strategy.beam_size # try some new beam settings
+    val: 15
+  - path: evaluate
+    val:
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: '{EXP_DIR}/../noisy.ja-en.tok.ja'
+      ref_file: '{EXP_DIR}/../MTNT/test/test.ja-en.en'
+      hyp_file: '{EXP_DIR}/hyp/{EXP}.noisy.en'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: '{EXP_DIR}/../test.kftt.tok.ja'
+      ref_file: '{EXP_DIR}/../ja/test.kftt.en'
+      hyp_file: '{EXP_DIR}/hyp/{EXP}.kftt.en'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: '{EXP_DIR}/../test.jesc.tok.ja'
+      ref_file: '{EXP_DIR}/../ja/test.jesc.en'
+      hyp_file: '{EXP_DIR}/hyp/{EXP}.jesc.en'
+    - !AccuracyEvalTask
+      eval_metrics: bleu
+      src_file: '{EXP_DIR}/../test.ted.tok.ja'
+      ref_file: '{EXP_DIR}/../ja/test.ted.en'
+      hyp_file: '{EXP_DIR}/hyp/{EXP}.ted.en'

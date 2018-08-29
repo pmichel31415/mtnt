@@ -1,0 +1,72 @@
+base-fr-en-eval: !LoadSerialized
+  filename: 'recipes/models/base-fr-en.mod'
+  overwrite: # list of [path, value] pairs. Value can be scalar or an arbitrary object
+  - path: preproc
+    val: !PreprocRunner
+      overwrite: True
+      tasks:
+      - !PreprocTokenize
+        in_files:
+        - '{EXP_DIR}/../fr/tst2015.en'
+        - '{EXP_DIR}/../fr/newstest2014.en'
+        - '{EXP_DIR}/../fr/newsdiscusstest2015.en'
+        - '{EXP_DIR}/../MTNT/test/fr-en.en'
+        out_files:
+        - '{EXP_DIR}/../fr/tst2015.tok.en'
+        - '{EXP_DIR}/../fr/newstest2014.tok.en'
+        - '{EXP_DIR}/../fr/newsdiscusstest2015.tok.en'
+        - '{EXP_DIR}/noisy.fr-en.tok.en'
+        specs:
+        - filenum: all
+          tokenizers:
+          - !SentencepieceTokenizer
+            path: ''
+            train_files: ''
+            vocab_size: 16000
+            model_prefix: '{EXP_DIR}/en-fr.en.bpe.16k'
+      - !PreprocTokenize
+        in_files:
+        - '{EXP_DIR}/../fr/tst2015.fr'
+        - '{EXP_DIR}/../fr/newstest2014.fr'
+        - '{EXP_DIR}/../fr/newsdiscusstest2015.fr'
+        - '{EXP_DIR}/../MTNT/test/fr-en.fr'
+        out_files:
+        - '{EXP_DIR}/../fr/tst2015.tok.fr'
+        - '{EXP_DIR}/../fr/newstest2014.tok.fr'
+        - '{EXP_DIR}/../fr/newsdiscusstest2015.tok.fr'
+        - '{EXP_DIR}/noisy.fr-en.tok.fr'
+        specs:
+        - filenum: all
+          tokenizers:
+          - !SentencepieceTokenizer
+            path: ''
+            train_files: ''
+            vocab_size: 16000
+            model_type: bpe
+            model_prefix: '{EXP_DIR}/en-fr.fr.bpe.16k'
+  - path: train # skip the training loop
+    val: null
+  - path: model.inference.search_strategy.beam_size # try some new beam settings
+    val: 15
+  - path: evaluate
+    val: # (re-)define test data and other evaluation settings
+    - !AccuracyEvalTask
+      eval_metrics: bleu,gleu
+      src_file: '{EXP_DIR}/noisy.fr-en.tok.fr'
+      ref_file: '{EXP_DIR}/../MTNT/test/fr-en.en'
+      hyp_file: 'recipes/hyp/{EXP}.hyp.en'
+    - !AccuracyEvalTask
+      eval_metrics: bleu,gleu
+      src_file: '{EXP_DIR}/../fr/newstest2014.tok.fr'
+      ref_file: '{EXP_DIR}/../fr/newstest2014.en'
+      hyp_file: 'recipes/hyp/{EXP}.newstest2014.hyp.en'
+    - !AccuracyEvalTask
+      eval_metrics: bleu,gleu
+      src_file: '{EXP_DIR}/../fr/newsdiscusstest2015.tok.fr'
+      ref_file: '{EXP_DIR}/../fr/newsdiscusstest2015.en'
+      hyp_file: '{EXP_DIR}/hyp/{EXP}.newsdiscusstest2015.en'
+    - !AccuracyEvalTask
+      eval_metrics: bleu,gleu
+      src_file: '{EXP_DIR}/../fr/tst2015.tok.fr'
+      ref_file: '{EXP_DIR}/../fr/tst2015.en'
+      hyp_file: 'recipes/hyp/{EXP}.tst2015.hyp.en'

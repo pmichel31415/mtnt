@@ -1,0 +1,14 @@
+wmt15-en-fr-1M-eval: !LoadSerialized
+  filename: 'recipes/models/wmt15-en-fr-1M.mod'
+  overwrite: # list of [path, value] pairs. Value can be scalar or an arbitrary object
+  - path: train # skip the training loop
+    val: null
+  - path: model.inference.search_strategy.beam_size # try some new beam settings
+    val: 5
+  - path: evaluate
+    val: # (re-)define test data and other evaluation settings
+    - !AccuracyEvalTask
+      eval_metrics: bleu,gleu
+      src_file: 'fr/dev.newstest2014.low.en'
+      ref_file: 'fr/dev.newstest2014.low.fr'
+      hyp_file: 'recipes/hyp/{EXP}.newstest2014_dev_hyp'
