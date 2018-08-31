@@ -86,7 +86,7 @@ If you use this code or the MTNT dataset, please cite the following publication:
 ```
 @InProceedings{michel2018mtnt,
   author    = {Michel, Paul  and  Neubig, Graham},
-  title     = {A Challenge Set Approach to Evaluating Machine Translation},
+  title     = {MTNT: A Testbed for Machine Translation of Noisy Text},
   booktitle = {Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing}
 }
 ```
