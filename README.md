@@ -5,6 +5,8 @@
 
 # MTNT: A Testbed for Machine Translation of Noisy Text
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/960a15f688d94a88922d45a907d1f0bc)](https://www.codacy.com/app/pmichel31415/mtnt?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pmichel31415/mtnt&amp;utm_campaign=Badge_Grade)
+
 This repo contains the code for the EMNLP 2018 paper [MTNT: A Testbed for Machine Translation of Noisy Text](http://www.cs.cmu.edu/~pmichel1/hosting/mtnt-emnlp.pdf). It will allow you to reproduce the collection process as well as the MT experiments. You can access the data [here](http://www.cs.cmu.edu/~pmichel1/mtnt).
 
 ## Prerequisites
