@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 
+
 def normalize_punctuation(s):
     """Adapted from https://github.com/moses-smt/mosesdecoder/blob/master/scripts/tokenizer/normalize-punctuation.perl"""
     s = re.sub(r"\r", r"", s)
@@ -55,6 +56,7 @@ def normalize_punctuation(s):
     re.sub(r"(\d) (\d)", r"$1.$2", s)
 
     return s
+
 
 if __name__ == '__main__':
     print(normalize_punctuation("“what’s up?”, he said"))
