@@ -34,6 +34,8 @@ LM_MODEL_BINARY_FILE="${LM_MODEL_PREFIX}.bin"
 # Lowercase
 tr '[:upper:]' '[:lower:]' < $CORPUS_FILE > $LOWERCASED_CORPUS_FILE
 
+mkdir models/
+
 # Build dictionaries
 echo "Building dictionary"
 python scripts/build_dic.py $CORPUS_FILE $DICT_FILE_PREFIX $LANG
