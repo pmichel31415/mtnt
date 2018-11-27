@@ -34,13 +34,15 @@ LM_MODEL_BINARY_FILE="${LM_MODEL_PREFIX}.bin"
 # Lowercase
 tr '[:upper:]' '[:lower:]' < $CORPUS_FILE > $LOWERCASED_CORPUS_FILE
 
+mkdir models/
+
 # Build dictionaries
 echo "Building dictionary"
 python scripts/build_dic.py $CORPUS_FILE $DICT_FILE_PREFIX $LANG
 
 # Train bpe
 echo "Building BPE model"
-python scripts/train_sentencepiece.py --input "$LOWERCASED_CORPUS_FILE" --model_prefix "$SUBWORD_MODEL_PREFIX" --model_type "$SUBWORD_MODEL" --vocab_size "$VOCABULARY_SIZE"
+python scripts/train_sentencepiece.py --input=$LOWERCASED_CORPUS_FILE --model_prefix=$SUBWORD_MODEL_PREFIX --model_type=$SUBWORD_MODEL --vocab_size=$VOCABULARY_SIZE
 
 # Tokenize
 echo "Tokenizing"
