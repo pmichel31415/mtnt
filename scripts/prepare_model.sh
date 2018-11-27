@@ -34,7 +34,7 @@ LM_MODEL_BINARY_FILE="${LM_MODEL_PREFIX}.bin"
 # Lowercase
 tr '[:upper:]' '[:lower:]' < $CORPUS_FILE > $LOWERCASED_CORPUS_FILE
 
-mkdir models/
+mkdir -p models/
 
 # Build dictionaries
 echo "Building dictionary"
