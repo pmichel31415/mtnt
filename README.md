@@ -21,7 +21,7 @@ langid
 numpy
 pickle
 praw
-sentencepiece
+sentencepiece>=0.1.6
 yaml
 ```
 
