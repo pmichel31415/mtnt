@@ -6,23 +6,30 @@ import time
 
 from scraper import RedditScraper
 
+
 def main_loop_old_comments(reddit_scraper):
     """Main loop for the scraper, collecting old comments"""
     # Start looping
     reddit_scraper.tick()
     # starting timestamp
-    timestamp = time.time() if reddit_scraper.reddit.start_timestamp is None else reddit_scraper.reddit.start_timestamp
+    if reddit_scraper.reddit.start_timestamp is None:
+        timestamp = time.time()
+    else:
+        timestamp = reddit_scraper.reddit.start_timestamp
     # Collect posts on a day to day basis
     delta_time = 24*3600
     # Go back up to 2006 (reddit was funded in 2005)
     while timestamp > 1136073600:
-        for submission in reddit_scraper.subreddit.submissions(start=timestamp-delta_time, end=timestamp):
+        for submission in reddit_scraper.subreddit.submissions(
+            start=timestamp-delta_time, end=timestamp
+        ):
             comments = submission.comments
             comments.replace_more(limit=None)
             for comment in comments.list():
                 # Check if comment is contains noisy strings
                 done = reddit_scraper.process_comment(comment)
-                # If enough commebts have been processed, kill the program (R.I.P.)
+                # If enough comments have been processed, kill the program
+                # (R.I.P.)
                 if done:
                     exit()
                 # Report periodically
@@ -44,7 +51,7 @@ def main_loop_new_comments(reddit_scraper):
     for comment in reddit_scraper.subreddit.comments(limit=None):
         # Check if comment is contains noisy strings
         done = reddit_scraper.process_comment(comment)
-        # If enough commebts have been processed, kill the program (R.I.P.)
+        # If enough comments have been processed, kill the program (R.I.P.)
         if done:
             exit()
         # Report periodically
@@ -55,6 +62,7 @@ def main_loop_new_comments(reddit_scraper):
             time.sleep(reddit_scraper.options.sleep_for)
             # Reset periodic counters
             reddit_scraper.reset_counts()
+
 
 def main():
     # Instantiate reddit_scraper

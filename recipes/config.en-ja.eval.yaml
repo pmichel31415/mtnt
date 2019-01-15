@@ -14,8 +14,8 @@ base-en-ja-eval: !LoadSerialized
         - '{EXP_DIR}/../ja/test.jesc.en'
         - '{EXP_DIR}/../ja/test.ted.ja'
         - '{EXP_DIR}/../ja/test.ted.en'
-        - '{EXP_DIR}/../MTNT/test/en-ja.ja'
-        - '{EXP_DIR}/../MTNT/test/en-ja.en'
+        - '{EXP_DIR}/../MTNT/test/test.en-ja.ja'
+        - '{EXP_DIR}/../MTNT/test/test.en-ja.en'
         out_files:
         - '{EXP_DIR}/../test.kftt.tok.ja'
         - '{EXP_DIR}/../test.kftt.tok.en'
@@ -46,7 +46,7 @@ base-en-ja-eval: !LoadSerialized
     - !AccuracyEvalTask
       eval_metrics: bleu
       src_file: '{EXP_DIR}/../noisy.en-ja.tok.en'
-      ref_file: '{EXP_DIR}/../MTNT/test/en-ja.ja'
+      ref_file: '{EXP_DIR}/../MTNT/test/test.en-ja.ja'
       hyp_file: '{EXP_DIR}/hyp/{EXP}.noisy.ja'
     - !AccuracyEvalTask
       eval_metrics: bleu

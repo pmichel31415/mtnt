@@ -2,12 +2,9 @@
 from __future__ import print_function, division, unicode_literals
 
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+
 import time
 import traceback
-import pickle
-import numpy as np
 
 # Reddit API module
 import praw
@@ -16,6 +13,7 @@ import util
 # Noise detector
 import noise
 import text
+
 
 class RedditScraper(object):
     """A bot selecting noisy sentences from reddit comments"""
@@ -68,24 +66,24 @@ class RedditScraper(object):
         self.start = time.time()
         return elapsed
 
-
     def save_noisy_strings(self, comment, noisy_strings):
         """Saves verse to tsv file with some metadata"""
         with open(self.general.output_file, 'a+') as f:
             for noisy_string, score in noisy_strings:
-                thread_title = text.replace_tabs_and_newlines(comment.submission.title)
+                thread_title = text.replace_tabs_and_newlines(
+                    comment.submission.title
+                )
                 comment_body = text.replace_tabs_and_newlines(comment.body)
-                print('%s' % noisy_string +                         # actual string
-                      '\t%.3f' % score +                            # LM score
-                      '\t%d' % comment.created_utc +                # timestamp
-                      '\t%s' % thread_title +                       # Thread title
-                      '\t/u/%s' % comment.author +                  # author
-                      '\t/r/%s' % comment.submission.subreddit +    # subreddit
-                      '\t%s' % comment.submission.over_18 +         # nsfw tag
-                      '\t%s' % comment.permalink +                  # permalink
-                      '\t%s' % comment_body,                        # Full comment
+                print('%s' % noisy_string +                     # actual string
+                      '\t%.3f' % score +                        # LM score
+                      '\t%d' % comment.created_utc +            # timestamp
+                      '\t%s' % thread_title +                   # Thread title
+                      '\t/u/%s' % comment.author +              # author
+                      '\t/r/%s' % comment.submission.subreddit +  # subreddit
+                      '\t%s' % comment.submission.over_18 +     # nsfw tag
+                      '\t%s' % comment.permalink +              # permalink
+                      '\t%s' % comment_body,                    # Full comment
                       file=f)
-
 
     def is_done(self):
         """Returns true if the scraper has found `max_records` noisy strings"""

@@ -10,7 +10,7 @@ base-en-fr-eval: !LoadSerialized
         - '{EXP_DIR}/../fr/tst2015.en'
         - '{EXP_DIR}/../fr/newstest2014.en'
         - '{EXP_DIR}/../fr/newsdiscusstest2015.en'
-        - '{EXP_DIR}/../MTNT/test/en-fr.en'
+        - '{EXP_DIR}/../MTNT/test/test.en-fr.en'
         out_files:
         - '{EXP_DIR}/../fr/tst2015.tok.en'
         - '{EXP_DIR}/../fr/newstest2014.tok.en'
@@ -29,7 +29,7 @@ base-en-fr-eval: !LoadSerialized
         - '{EXP_DIR}/../fr/tst2015.fr'
         - '{EXP_DIR}/../fr/newstest2014.fr'
         - '{EXP_DIR}/../fr/newsdiscusstest2015.fr'
-        - '{EXP_DIR}/../MTNT/test/en-fr.fr'
+        - '{EXP_DIR}/../MTNT/test/test.en-fr.fr'
         out_files:
         - '{EXP_DIR}/../fr/tst2015.tok.fr'
         - '{EXP_DIR}/../fr/newstest2014.tok.fr'
@@ -53,7 +53,7 @@ base-en-fr-eval: !LoadSerialized
     - !AccuracyEvalTask
       eval_metrics: bleu,gleu
       src_file: '{EXP_DIR}/noisy.en-fr.tok.en'
-      ref_file: '{EXP_DIR}/../MTNT/test/en-fr.fr'
+      ref_file: '{EXP_DIR}/../MTNT/test/test.en-fr.fr'
       hyp_file: 'recipes/hyp/{EXP}.hyp.fr'
     - !AccuracyEvalTask
       eval_metrics: bleu,gleu

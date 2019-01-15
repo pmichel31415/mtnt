@@ -44,9 +44,9 @@ cat hyp/base-en-fr-eval.newstest2014.hyp.fr | sacrebleu --tokenize=intl ../fr/ne
 # newsdiscusstest2015
 cat hyp/base-en-fr-eval.newsdiscusstest2015.fr | sacrebleu --tokenize=intl ../fr/newsdiscusstest2015.fr
 # MTNT (base)
-cat hyp/base-en-fr-eval.hyp.fr | sacrebleu --tokenize=intl ../MTNT/test/en-fr.fr
+cat hyp/base-en-fr-eval.hyp.fr | sacrebleu --tokenize=intl ../MTNT/test/test.en-fr.fr
 # MTNT (tuned)
-cat hyp/tune-en-fr.tuned.fr | sacrebleu --tokenize=intl ../MTNT/test/en-fr.fr
+cat hyp/tune-en-fr.tuned.fr | sacrebleu --tokenize=intl ../MTNT/test/test.en-fr.fr
 
 ## fr-en
 # newstest2014
@@ -54,9 +54,9 @@ cat hyp/base-fr-en-eval.newstest2014.hyp.en | sacrebleu --tokenize=intl ../fr/ne
 # newsdiscusstest2015
 cat hyp/base-fr-en-eval.newsdiscusstest2015.en | sacrebleu --tokenize=intl ../fr/newsdiscusstest2015.en
 # MTNT (base)
-cat hyp/base-fr-en-eval.hyp.en | sacrebleu --tokenize=intl ../MTNT/test/fr-en.en
+cat hyp/base-fr-en-eval.hyp.en | sacrebleu --tokenize=intl ../MTNT/test/test.fr-en.en
 # MTNT (tuned)
-cat hyp/tune-fr-en.tuned.en | sacrebleu --tokenize=intl ../MTNT/test/fr-en.en
+cat hyp/tune-fr-en.tuned.en | sacrebleu --tokenize=intl ../MTNT/test/test.fr-en.en
 
 ## en-ja
 # TED
@@ -66,9 +66,9 @@ bash ../scripts/bleu_ja.sh hyp/base-en-ja-eval.kftt.ja ../ja/test.kftt.ja
 # JESC
 bash ../scripts/bleu_ja.sh hyp/base-en-ja-eval.jesc.ja ../ja/test.jesc.ja
 # MTNT (base)
-bash ../scripts/bleu_ja.sh hyp/base-en-ja-eval.noisy.ja ../MTNT/test/en-ja.ja
+bash ../scripts/bleu_ja.sh hyp/base-en-ja-eval.noisy.ja ../MTNT/test/test.en-ja.ja
 # MTNT (tuned)
-bash ../scripts/bleu_ja.sh hyp/tune-en-ja.tuned.ja ../MTNT/test/en-ja.ja
+bash ../scripts/bleu_ja.sh hyp/tune-en-ja.tuned.ja ../MTNT/test/test.en-ja.ja
 
 ## ja-en
 # TED
@@ -78,9 +78,9 @@ cat hyp/base-ja-en-eval.kftt.en | sacrebleu --tokenize intl ../ja/test.kftt.en
 # JESC
 cat hyp/base-ja-en-eval.jesc.en | sacrebleu --tokenize intl ../ja/test.jesc.en
 # MTNT (base)
-cat hyp/base-ja-en-eval.hyp.en | sacrebleu --tokenize=intl ../MTNT/test/ja-en.en
+cat hyp/base-ja-en-eval.hyp.en | sacrebleu --tokenize=intl ../MTNT/test/test.ja-en.en
 # MTNT (tuned)
-cat hyp/tune-ja-en.tuned.en | sacrebleu --tokenize=intl ../MTNT/test/ja-en.en
+cat hyp/tune-ja-en.tuned.en | sacrebleu --tokenize=intl ../MTNT/test/test.ja-en.en
 ```
 
 

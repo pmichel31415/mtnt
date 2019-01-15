@@ -2,8 +2,6 @@
 from __future__ import print_function, division, unicode_literals
 
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 import pickle
 import numpy as np
@@ -19,6 +17,7 @@ import text
 # Utility functions
 import util
 
+
 class NoiseDetector(object):
     """Retrieve noisy text from comments"""
 
@@ -28,7 +27,7 @@ class NoiseDetector(object):
         util.load_config(self, config_file)
         # Load dictionary
         with open(self.dictionary.dic_file, 'rb') as f:
-            self.dic = pickle.load(f) 
+            self.dic = pickle.load(f)
         # Moses tokenizer
         self.moses_tokenizer = MosesTokenizer(self.options.language)
         # Load subword tokenizer
@@ -36,10 +35,12 @@ class NoiseDetector(object):
         self.subword_tokenizer.Load(self.subwords.model_file)
         # Load language model
         self.lm = kenlm.Model(self.language_model.model_file)
-        # Get the percentile of length normalized scores we'll use as a threshold
-        norm_train_scores = np.loadtxt(self.language_model.train_scores)[:,1]
-        self.score_threshold = np.percentile(norm_train_scores, self.language_model.score_percentile)
-    
+        # Get the percentile of length normalized scores we'll use as a
+        # threshold
+        norm_train_scores = np.loadtxt(self.language_model.train_scores)[:, 1]
+        self.score_threshold = np.percentile(
+            norm_train_scores, self.language_model.score_percentile)
+
     def print_config(self):
         """Print infos that weren't specified before runtime"""
         if self.general.verbose:
@@ -47,28 +48,30 @@ class NoiseDetector(object):
             sys.stdout.flush()
 
     def preprocess_candidate(self, candidate):
-        """Preprocess comment (essentially lowercase and tokenizes with Moses tokenizer)"""
+        """Preprocess comment (essentially lowercase and tokenizes with Moses
+        tokenizer)"""
         # Remove mqrkdown
         candidate = text.strip_markdown(candidate)
         # normalize punctuation
         normalized_candidate = text.normalize_punctuation(candidate)
         # Tokenize
         if self.options.language != 'ja':
-            tokenized_candidate = self.moses_tokenizer.tokenize(normalized_candidate, return_str=True)
+            tokenized_candidate = self.moses_tokenizer.tokenize(
+                normalized_candidate, return_str=True)
         else:
             tokenized_candidate = normalized_candidate
         # Lowercase
         lowercased_candidate = tokenized_candidate.lower()
         return lowercased_candidate
 
-
     def has_bad_lm_score(self, candidate):
-        """Check if the candidate sentence has a bad score under the language model"""
+        """Check if the candidate sentence has a bad score under the language
+        model"""
         # Split into subwords
         pieces = self.subword_tokenizer.EncodeAsPieces(candidate)
         tokenized_candidate = ' '.join(pieces)
         # Get scores from lm score
-        score = self.lm.score(tokenized_candidate, bos=True, eos=True) #min(self.lm.score(' '.join(five_gram), bos=True, eos=True) for five_gram in pieces[::5])
+        score = self.lm.score(tokenized_candidate, bos=True, eos=True)
         # Normalize by length
         normalized_score = score / (len(pieces) + 1e-20)
         # Check whether the score is bad enough
@@ -79,8 +82,6 @@ class NoiseDetector(object):
         # For japanese, return True (because OOVs is too restrictive)
         if self.options.language == 'ja':
             return True
-        # Else check for OOVs
-        has_oov = False
         # Iterate over all words in the candidate string
         words = candidate.split()
         for word in words:
@@ -90,13 +91,14 @@ class NoiseDetector(object):
         return False
 
     def get_noisy_strings(self, comment):
-        """Select all 'noisy' strings in a reddit comment and returns them with their LM scores"""
+        """Select all 'noisy' strings in a reddit comment and returns them
+        with their LM scores"""
         # Get comment body
         body = comment.body.strip('\n')
         # Split into lines
         lines = body.split('\n')
         # list storing noisy sentences
-        noisy_strings = [] 
+        noisy_strings = []
         # Iterate over all lines in comment
         for line in lines:
             # Preprocess (tokenize, lowercase)
