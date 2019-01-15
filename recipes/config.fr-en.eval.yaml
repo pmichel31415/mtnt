@@ -1,5 +1,5 @@
 base-fr-en-eval: !LoadSerialized
-  filename: 'recipes/models/base-fr-en.mod'
+  filename: 'recipes/models/europarl-fr-en.mod'
   overwrite: # list of [path, value] pairs. Value can be scalar or an arbitrary object
   - path: preproc
     val: !PreprocRunner
@@ -10,12 +10,12 @@ base-fr-en-eval: !LoadSerialized
         - '{EXP_DIR}/../fr/tst2015.en'
         - '{EXP_DIR}/../fr/newstest2014.en'
         - '{EXP_DIR}/../fr/newsdiscusstest2015.en'
-        - '{EXP_DIR}/../MTNT/test/fr-en.en'
+        - '{EXP_DIR}/../MTNT/test/test.fr-en.en'
         out_files:
         - '{EXP_DIR}/../fr/tst2015.tok.en'
         - '{EXP_DIR}/../fr/newstest2014.tok.en'
         - '{EXP_DIR}/../fr/newsdiscusstest2015.tok.en'
-        - '{EXP_DIR}/noisy.fr-en.tok.en'
+        - '{EXP_DIR}/mtnt.test.fr-en.tok.en'
         specs:
         - filenum: all
           tokenizers:
@@ -29,12 +29,12 @@ base-fr-en-eval: !LoadSerialized
         - '{EXP_DIR}/../fr/tst2015.fr'
         - '{EXP_DIR}/../fr/newstest2014.fr'
         - '{EXP_DIR}/../fr/newsdiscusstest2015.fr'
-        - '{EXP_DIR}/../MTNT/test/fr-en.fr'
+        - '{EXP_DIR}/../MTNT/test/test.fr-en.fr'
         out_files:
         - '{EXP_DIR}/../fr/tst2015.tok.fr'
         - '{EXP_DIR}/../fr/newstest2014.tok.fr'
         - '{EXP_DIR}/../fr/newsdiscusstest2015.tok.fr'
-        - '{EXP_DIR}/noisy.fr-en.tok.fr'
+        - '{EXP_DIR}/mtnt.test.fr-en.tok.fr'
         specs:
         - filenum: all
           tokenizers:
@@ -52,8 +52,8 @@ base-fr-en-eval: !LoadSerialized
     val: # (re-)define test data and other evaluation settings
     - !AccuracyEvalTask
       eval_metrics: bleu,gleu
-      src_file: '{EXP_DIR}/noisy.fr-en.tok.fr'
-      ref_file: '{EXP_DIR}/../MTNT/test/fr-en.en'
+      src_file: '{EXP_DIR}/mtnt.test.fr-en.tok.fr'
+      ref_file: '{EXP_DIR}/../MTNT/test/test.fr-en.en'
       hyp_file: 'recipes/hyp/{EXP}.hyp.en'
     - !AccuracyEvalTask
       eval_metrics: bleu,gleu
