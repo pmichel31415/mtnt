@@ -3,11 +3,11 @@ general:
   debug: False
   verbose: True
 reddit:
-  user_agent: noisy-mt-bot
-  user_name: noisy-mt-bot
-  client_id: WvQVB2p9Kjpw0w
-  password: wAvAggSB4pH1FXgb
-  secret: dwEoMQUkIKuh32v8W4PkSxgZpH4
+  user_agent: placeholder
+  user_name: placeholder
+  client_id: placeholder
+  password: placeholder
+  secret: placeholder
   subreddit: 'newsokur+bakanewsjp+newsokuvip+lowlevelaware+steamr'
   new_comments: False
   start_timestamp: 1522339940
