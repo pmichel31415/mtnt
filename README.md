@@ -78,7 +78,7 @@ cat MTNT/test/test.en-fr.en | python3 analysis/count_emojis.py
 # Check the ration US/UK spelling (for ise/ize which is a good indicator) (should return 35.7% 64.3%)
 cat MTNT/test/test.en-fr.en | python3 analysis/uk_us_ratio.py
 # Count the number of informal pronouns (in japanese) (should return 35)
-kytea -model ~/kytea/share/kytea/model.bin -notags MTNT/test/test.ja-en.ja | python3 analysis/count_keywords.py resources/informal_pronouns.ja
+kytea -model /path/to/kytea/data/model.bin -out tok MTNT/test/test.ja-en.ja | python3 analysis/count_keywords.py resources/informal_pronouns.ja
 ```
 
 ## Citing
