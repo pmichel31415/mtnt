@@ -88,8 +88,9 @@ If you use this code or the MTNT dataset, please cite the following publication:
 ```
 @InProceedings{michel2018mtnt,
   author    = {Michel, Paul  and  Neubig, Graham},
-  title     = {MTNT: A Testbed for Machine Translation of Noisy Text},
-  booktitle = {Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing}
+  title     = {{MTNT}: A Testbed for {M}achine {T}ranslation of {N}oisy {T}ext},
+  booktitle = {Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  year      = {2018}
 }
 ```
 
